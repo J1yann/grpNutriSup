@@ -3,6 +3,8 @@ package com.myapp.grpnutrisup
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.OnBackPressedCallback
+import androidx.core.app.ActivityOptionsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
@@ -21,7 +23,7 @@ class MealActivity : AppCompatActivity() {
 
         viewPager = findViewById(R.id.viewPager)
         tabLayout = findViewById(R.id.tabLayout)
-        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView = findViewById(R.id.bottom_nav_include)
 
         viewPager.adapter = MealPagerAdapter(this)
 
@@ -34,35 +36,60 @@ class MealActivity : AppCompatActivity() {
             }
         }.attach()
 
+        bottomNavigationView?.selectedItemId = R.id.navigation_meal
+
         setupBottomNavigationBar()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                ActivityOptionsCompat.makeCustomAnimation(
+                    this@MealActivity,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                ).toBundle()
+            }
+        })
     }
 
-    private fun setupBottomNavigationBar() {
-        bottomNavigationView.selectedItemId = R.id.navigation_meal
-
-        bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_home -> {
-                    startActivity(Intent(this, HomeActivity::class.java))
-                    true
-                }
-                R.id.navigation_search -> {
-                    startActivity(Intent(this, FoodSearchActivity::class.java))
-                    true
-                }
-                R.id.navigation_activity -> {
-                    startActivity(Intent(this, LogActivityPage::class.java))
-                    true
-                }
-                R.id.navigation_meal -> {
-                    true
-                }
-                R.id.navigation_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
-                    true
-                }
-                else -> false
+private fun setupBottomNavigationBar() {
+    bottomNavigationView?.setOnNavigationItemSelectedListener { menuItem ->
+        when (menuItem.itemId) {
+            R.id.navigation_home -> {
+                navigateTo(HomeActivity::class.java)
+                true
             }
+            R.id.navigation_search -> {
+                navigateTo(FoodSearchActivity::class.java)
+                true
+            }
+            R.id.navigation_activity -> {
+                navigateTo(LogActivityPage::class.java)
+                true
+            }
+            R.id.navigation_meal -> true
+            R.id.navigation_profile -> {
+                navigateTo(ProfileActivity::class.java)
+                true
+            }
+            else -> false
         }
+    }
+}
+
+    private fun navigateTo(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        val options = ActivityOptionsCompat.makeCustomAnimation(
+            this,
+            R.anim.fade_in,
+            R.anim.fade_out
+        )
+        startActivity(intent, options.toBundle())
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Ensure correct navigation item is selected
+        findViewById<BottomNavigationView>(R.id.bottom_nav_include).selectedItemId = R.id.navigation_meal
     }
 }

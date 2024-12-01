@@ -5,11 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -34,6 +37,10 @@ class ProfileActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             loadProfileData()  // Refresh profile data on broadcast
         }
+    }
+
+    companion object {
+        var previousPage: Int = R.id.navigation_home
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,14 +69,32 @@ class ProfileActivity : AppCompatActivity() {
 
         // Set click listeners for buttons
         buttonChangeProfile.setOnClickListener {
-            startActivity(Intent(this, EditProfileActivity::class.java))
+            it.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in))
+            navigateTo(EditProfileActivity::class.java)
         }
         buttonLogout.setOnClickListener {
+            it.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in))
             logoutUser()  // Handle logout
         }
 
+        // Store the current page as previous page when entering this activity
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav_include)
+        previousPage = bottomNav.selectedItemId
+
         // Set up Bottom Navigation View
         setupBottomNavigation()
+
+        // Handle back press
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                ActivityOptionsCompat.makeCustomAnimation(
+                    this@ProfileActivity,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                ).toBundle()
+            }
+        })
     }
 
     override fun onStart() {
@@ -81,6 +106,12 @@ class ProfileActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(profileUpdateReceiver)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Ensure correct navigation item is selected
+        findViewById<BottomNavigationView>(R.id.bottom_nav_include).selectedItemId = R.id.navigation_profile
     }
 
     private fun loadProfileData() {
@@ -150,23 +181,18 @@ class ProfileActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK  // Clear the back stack
         startActivity(intent)
+        overrideActivityTransition(OVERRIDE_TRANSITION_CLOSE, R.anim.fade_in, R.anim.fade_out)
         finish()
     }
 
     // Bottom Navigation Setup
     private fun setupBottomNavigation() {
-        val bottomNav: BottomNavigationView = findViewById(R.id.bottom_navigation)
+        val bottomNavigationView: BottomNavigationView? = findViewById(R.id.bottom_nav_include)
 
-        bottomNav.selectedItemId = R.id.navigation_profile
-
-        bottomNav.setOnNavigationItemSelectedListener { menuItem ->
+        bottomNavigationView?.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.navigation_home -> {
                     navigateTo(HomeActivity::class.java)
-                    true
-                }
-                R.id.navigation_activity -> {
-                    navigateTo(LogActivityPage::class.java)
                     true
                 }
                 R.id.navigation_search -> {
@@ -174,14 +200,12 @@ class ProfileActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_meal -> {
-                    if (hasHealthComplication) {
-                        // Show the dialog message and prevent access to MealActivity
-                        showHealthComplicationDialog()
-                        false // Prevent navigation to MealActivity
-                    } else {
-                        navigateTo(MealActivity::class.java)
-                        true
-                    }
+                    navigateTo(MealActivity::class.java)
+                    true
+                }
+                R.id.navigation_activity -> {
+                    navigateTo(LogActivityPage::class.java)
+                    true
                 }
                 R.id.navigation_profile -> {
                     // Already in ProfileActivity, do nothing
@@ -192,19 +216,13 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun showHealthComplicationDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Health Advisory")
-        builder.setMessage("You have reported a health complication. Please consult a healthcare professional for personalized meal plans.")
-        builder.setPositiveButton("OK") { dialog, _ ->
-            dialog.dismiss()
-        }
-        builder.show()
-    }
-
-    private fun navigateTo(destination: Class<*>) {
-        val intent = Intent(this, destination)
-        startActivity(intent)
-        finish() // Close current activity to prevent stack buildup
+    private fun navigateTo(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        val options = ActivityOptionsCompat.makeCustomAnimation(
+            this,
+            R.anim.fade_in,
+            R.anim.fade_out
+        )
+        startActivity(intent, options.toBundle())
     }
 }

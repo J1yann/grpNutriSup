@@ -221,12 +221,13 @@
 </LinearLayout>
 
     <!-- Bottom Navigation View -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        style="@style/AppBottomNavigationView"
+    <include
+        android:id="@+id/bottom_nav_include"
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
-
+        app:layout_constraintStart_toStartOf="parent" />
+        
 </androidx.constraintlayout.widget.ConstraintLayout>

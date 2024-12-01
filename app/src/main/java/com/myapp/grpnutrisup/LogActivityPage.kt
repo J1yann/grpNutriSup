@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -34,6 +36,18 @@ class LogActivityPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.log_activity_page)
 
+        // Handle back press
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                ActivityOptionsCompat.makeCustomAnimation(
+                    this@LogActivityPage,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                ).toBundle()
+            }
+        })
+
         // Initialize Firebase
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
@@ -43,8 +57,12 @@ class LogActivityPage : AppCompatActivity() {
         durationInput = findViewById(R.id.duration_input)
         logActivityButton = findViewById(R.id.log_activity_button)
         successMessage = findViewById(R.id.success_message)
-        bottomNavigation = findViewById(R.id.bottom_navigation)
+        bottomNavigation = findViewById(R.id.bottom_nav_include)
         loggedActivitiesRecyclerView = findViewById(R.id.logged_activities_recycler_view)
+
+        // Setup RecyclerView
+        loggedActivitiesRecyclerView.layoutManager = LinearLayoutManager(this)
+        loggedActivitiesRecyclerView.adapter = ActivityLogAdapter(emptyList())
 
         // Populate Spinner with data from strings.xml
         setupActivityTypeSpinner()
@@ -63,29 +81,39 @@ class LogActivityPage : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        bottomNavigation.selectedItemId = R.id.navigation_activity
-        bottomNavigation.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
+        bottomNavigation?.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
                 R.id.navigation_home -> {
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    navigateTo(HomeActivity::class.java)
                     true
                 }
                 R.id.navigation_activity -> true
                 R.id.navigation_search -> {
-                    startActivity(Intent(this, FoodSearchActivity::class.java))
+                    navigateTo(FoodSearchActivity::class.java)
                     true
                 }
                 R.id.navigation_meal -> {
-                    startActivity(Intent(this, MealActivity::class.java))
+                    navigateTo(MealActivity::class.java)
                     true
                 }
                 R.id.navigation_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                    navigateTo(ProfileActivity::class.java)
                     true
                 }
                 else -> false
             }
         }
+        bottomNavigation?.selectedItemId = R.id.navigation_activity
+    }
+
+    private fun navigateTo(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        val options = ActivityOptionsCompat.makeCustomAnimation(
+            this,
+            R.anim.fade_in,
+            R.anim.fade_out
+        )
+        startActivity(intent, options.toBundle())
     }
 
     private fun setupActivityTypeSpinner() {
@@ -223,7 +251,12 @@ class LogActivityPage : AppCompatActivity() {
     }
 
     private fun displayLoggedActivities(activities: List<ActivityLog>) {
-        loggedActivitiesRecyclerView.layoutManager = LinearLayoutManager(this)
         loggedActivitiesRecyclerView.adapter = ActivityLogAdapter(activities)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Ensure correct navigation item is selected
+        findViewById<BottomNavigationView>(R.id.bottom_nav_include).selectedItemId = R.id.navigation_activity
     }
 }

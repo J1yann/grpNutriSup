@@ -13,14 +13,12 @@
             <item>Sedentary (little or no exercise)</item>
             <item>Lightly Active (light exercise/sports 1-3 days/week)</item>
             <item>Moderately Active (moderate exercise/sports 3-5 days/week)</item>
-            <item>Very Active (hard exercise/sports 6-7 days a week)</item>
-            <item>Extra Active (very hard exercise/physical job)</item>
         </string-array>
-
+    <!-- Activity Log -->
+    <string name="duration_format">Duration: %d mins</string>
+    <string name="calories_burned_format">Calories Burned: %.1f</string>
     <string-array name="activity_types">
         <item>Walk</item>
         <item>Run</item>
-        <item>Cycle</item>
-        <item>Swim</item>
     </string-array>
 </resources>

@@ -6,9 +6,12 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.work.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -43,12 +46,24 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        // Handle back press
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                ActivityOptionsCompat.makeCustomAnimation(
+                    this@HomeActivity,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                ).toBundle()
+            }
+        })
+
         // Initialize views
         caloriesValueTextView = findViewById(R.id.calories_value)
         caloriesProgressBar = findViewById(R.id.calories_progress)
         proteinValueTextView = findViewById(R.id.protein_value)
         fatsValueTextView = findViewById(R.id.fats_value)
-        bottomNavigation = findViewById(R.id.bottom_navigation)
+        bottomNavigation = findViewById(R.id.bottom_nav_include)
         cardView4 = findViewById(R.id.cardView4)
         historyButton = findViewById(R.id.historyButton)
         progHistoryButton = findViewById(R.id.progHistory)
@@ -69,17 +84,32 @@ class HomeActivity : AppCompatActivity() {
         fetchMealSelectionsAndDisplay()
         scheduleDailyIntakeReset()
     }
+
+    override fun onResume() {
+        super.onResume()
+        // Ensure correct navigation item is selected
+        bottomNavigation.selectedItemId = R.id.navigation_home
+    }
+
     private fun setupHistoryButtonClickListener() {
         historyButton.setOnClickListener {
-            val intent = Intent(this, MealHistoryActivity::class.java)
-            startActivity(intent)
+            navigateTo(MealHistoryActivity::class.java)
         }
     }
     private fun setupProressHistoryButtonClickListener() {
         progHistoryButton.setOnClickListener {
-            val intent = Intent(this, ProgressHistoryActivity::class.java)
-            startActivity(intent)
+            navigateTo(ProgressHistoryActivity::class.java)
         }
+    }
+
+    private fun navigateTo(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        val options = ActivityOptionsCompat.makeCustomAnimation(
+            this,
+            R.anim.fade_in,
+            R.anim.fade_out
+        )
+        startActivity(intent, options.toBundle())
     }
 
     private fun fetchMealSelectionsAndDisplay() {
@@ -109,27 +139,30 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
+        // Set initial selection
+        bottomNavigation.selectedItemId = R.id.navigation_home
+        
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> true
                 R.id.navigation_activity -> {
-                    startActivity(Intent(this, LogActivityPage::class.java))
+                    navigateTo(LogActivityPage::class.java)
                     true
                 }
                 R.id.navigation_search -> {
-                    startActivity(Intent(this, FoodSearchActivity::class.java))
+                    navigateTo(FoodSearchActivity::class.java)
                     true
                 }
                 R.id.navigation_meal -> {
                     if (hasHealthComplication) {
                         showHealthComplicationDialog()
                     } else {
-                        startActivity(Intent(this, MealActivity::class.java))
+                        navigateTo(MealActivity::class.java)
                     }
                     true
                 }
                 R.id.navigation_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                    navigateTo(ProfileActivity::class.java)
                     true
                 }
                 else -> false
@@ -203,8 +236,7 @@ class HomeActivity : AppCompatActivity() {
             .setMessage("You have reported a health complication. Please consult a healthcare professional for personalized meal plans.")
             .setPositiveButton("Yes") { dialog, _ ->
                 dialog.dismiss()
-                val intent = Intent(this, MealActivity::class.java)
-                startActivity(intent)
+                navigateTo(MealActivity::class.java)
             }
             .setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()

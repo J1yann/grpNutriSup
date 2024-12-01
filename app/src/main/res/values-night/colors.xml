@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#4CAF50</color>
+    <color name="primary_variant">#388E3C</color>
+    <color name="secondary">#81C784</color>
+    <color name="secondary_variant">#66BB6A</color>
+
+    <color name="background">#121212</color>
+    <color name="surface">#1E1E1E</color>
+    <color name="card_background">#242424</color>
+    <color name="bottom_nav_background">#242424</color>
+    
+    <color name="error">#CF6679</color>
+    <color name="success">#43A047</color>
+
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_background">#E1E1E1</color>
+    <color name="on_surface">#E1E1E1</color>
+    <color name="on_surface_medium">#99FFFFFF</color>
+    <color name="on_surface_variant">#8B8B8B</color>
+
+    <color name="ripple">#1FFFFFFF</color>
+    <color name="divider">#1FFFFFFF</color>
+    
+    <color name="input_background">#1A1A1A</color>
+    <color name="button_background">#388E3C</color>
+    <color name="button_text">#FFFFFF</color>
+
+    <color name="nav_background">#1B5E20</color>  <!-- Darker green for dark mode -->
+    <color name="nav_selected">#4CAF50</color>    <!-- Primary green -->
+    <color name="nav_unselected">#99FFFFFF</color>  <!-- Semi-transparent white -->
+
+    <color name="cardBackground">#1E1E1E</color>
+    <color name="textPrimary">#E0E0E0</color>
+    <color name="textSecondary">#A0A0A0</color>
+    <color name="accentGreen">#00E676</color>
+    <color name="progressBackground">#2E7D32</color>
+</resources>

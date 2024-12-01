@@ -10,8 +10,10 @@ import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,6 +46,18 @@ class FoodSearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_search)
+
+        // Handle back press
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                ActivityOptionsCompat.makeCustomAnimation(
+                    this@FoodSearchActivity,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                ).toBundle()
+            }
+        })
 
         db = FirebaseFirestore.getInstance()
 
@@ -79,6 +93,12 @@ class FoodSearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Ensure correct navigation item is selected
+        findViewById<BottomNavigationView>(R.id.bottom_nav_include).selectedItemId = R.id.navigation_search
     }
 
     private fun checkHealthComplication() {
@@ -117,16 +137,16 @@ class FoodSearchActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
-        val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
-        bottomNavigation.selectedItemId = R.id.navigation_search
-        bottomNavigation.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
+        val bottomNavigationView: BottomNavigationView? = findViewById(R.id.bottom_nav_include)
+
+        bottomNavigationView?.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
                 R.id.navigation_home -> {
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    navigateTo(HomeActivity::class.java)
                     true
                 }
                 R.id.navigation_activity -> {
-                    startActivity(Intent(this, LogActivityPage::class.java))
+                    navigateTo(LogActivityPage::class.java)
                     true
                 }
                 R.id.navigation_search -> true
@@ -135,17 +155,28 @@ class FoodSearchActivity : AppCompatActivity() {
                         showHealthComplicationDialog()
                         false
                     } else {
-                        startActivity(Intent(this, MealActivity::class.java))
+                        navigateTo(MealActivity::class.java)
                         true
                     }
                 }
                 R.id.navigation_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                    navigateTo(ProfileActivity::class.java)
                     true
                 }
                 else -> false
             }
         }
+        bottomNavigationView?.selectedItemId = R.id.navigation_search
+    }
+
+    private fun navigateTo(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        startActivity(intent)
+        ActivityOptionsCompat.makeCustomAnimation(
+            this,
+            R.anim.fade_in,
+            R.anim.fade_out
+        ).toBundle()
     }
 
     private fun fetchFoodData() {

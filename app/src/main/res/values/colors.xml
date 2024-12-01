@@ -1,8 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="darker_gray">#5A5A5A</color>
-    <color name="primaryText">#FF000000</color>
-    <color name="transparent">#00000000</color>
+    <!-- Primary brand colors -->
+    <color name="primary">#4CAF50</color>
+    <color name="primary_variant">#43A047</color>
+    <color name="secondary">#66BB6A</color>
+    <color name="secondary_variant">#81C784</color>
+
+    <!-- Background colors -->
+    <color name="background">#F5F8F5</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_stroke">#E0E0E0</color>
+    <color name="bottom_nav_background">#FFFFFF</color>
+    <color name="lightBackground">#F8F9FA</color>
+    
+    <color name="error">#B00020</color>
+
+    <!-- Text colors -->
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_background">#2E3B2E</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="on_surface">#2E3B2E</color>
+    <color name="on_surface_medium">#66757575</color>
+    <color name="on_surface_variant">#616161</color>
+    <color name="textPrimary">#2C3E50</color>
+    <color name="textSecondary">#5D6D7E</color>
+
+    <!-- Utility colors -->
+    <color name="ripple">#1F000000</color>
+    <color name="divider">#1F000000</color>
+    
+    <!-- Nutrition-specific colors -->
+    <color name="nutrition_label">#2E7D32</color>
+    <color name="progress_indicator">#4CAF50</color>
+    <color name="progress_track">#E8F5E9</color>
+    <color name="progressBackground">#E8F5E9</color>
+    <color name="card_surface_variant">#FFFFFF</color>
+    <color name="cardBackground">#FFFFFF</color>
+
+    <color name="nav_background">#E8F5E9</color>  <!-- Light green background -->
+    <color name="nav_selected">#4CAF50</color>    <!-- Primary green -->
+    <color name="nav_unselected">#616161</color>  <!-- Dark gray -->
+    <color name="accentGreen">#2ECC71</color>
 </resources>
