@@ -13,8 +13,3 @@
 .externalNativeBuild
 .cxx
 local.properties
-.idea/codeStyles/Project.xml
-.idea/codeStyles/codeStyleConfig.xml
-.idea/runConfigurations.xml
-.kotlin/errors
-app/release/
