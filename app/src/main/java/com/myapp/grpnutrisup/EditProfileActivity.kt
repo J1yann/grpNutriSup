@@ -18,16 +18,15 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var editTextWeight: EditText
     private lateinit var editTextAllergens: EditText
     private lateinit var editTextWeightGoal: EditText
-    private lateinit var spinnerGoal: Spinner
-    private lateinit var spinnerWeeklyWeightChange: Spinner
-    private lateinit var spinnerActivityLevel: Spinner
+    private lateinit var autoCompleteGoal: AutoCompleteTextView
+    private lateinit var autoCompleteWeeklyChange: AutoCompleteTextView
+    private lateinit var autoCompleteActivityLevel: AutoCompleteTextView
     private lateinit var buttonSaveProfile: Button
-    private lateinit var buttonBack: Button  // Declare back button
-
+    private lateinit var buttonBack: Button
+    private lateinit var loadingDialog: Dialog
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private var gender: String = "male"
-    private lateinit var loadingDialog: Dialog
+    private var gender: String = "male" // Default value
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,17 +42,17 @@ class EditProfileActivity : AppCompatActivity() {
         editTextWeight = findViewById(R.id.editTextWeight)
         editTextAllergens = findViewById(R.id.editTextAllergens)
         editTextWeightGoal = findViewById(R.id.editTextWeightGoal)
-        spinnerGoal = findViewById(R.id.spinnerGoal)
-        spinnerWeeklyWeightChange = findViewById(R.id.spinnerWeeklyWeightChange)
-        spinnerActivityLevel = findViewById(R.id.spinnerActivityLevel)
+        autoCompleteGoal = findViewById(R.id.spinnerGoal)
+        autoCompleteWeeklyChange = findViewById(R.id.spinnerWeeklyWeightChange)
+        autoCompleteActivityLevel = findViewById(R.id.spinnerActivityLevel)
         buttonSaveProfile = findViewById(R.id.buttonSaveProfile)
-        buttonBack = findViewById(R.id.buttonBack) // Initialize back button
+        buttonBack = findViewById(R.id.buttonBack)
 
         // Set up the loading dialog
         setupLoadingDialog()
 
-        // Populate spinners with goal and weekly weight change options
-        setupSpinners()
+        // Set up the dropdown menus
+        setupDropdowns()
 
         // Load user profile data from Firestore
         loadProfileData()
@@ -75,8 +74,8 @@ class EditProfileActivity : AppCompatActivity() {
         loadingDialog.setCancelable(false) // Prevent dismissing by clicking outside
     }
 
-    private fun setupSpinners() {
-        val goals = arrayOf("Maintain", "Lose", "Gain")
+    private fun setupDropdowns() {
+        val goals = arrayOf("Maintain Weight", "Lose Weight", "Gain Weight")
         val weeklyWeightChanges = arrayOf("0.25kg", "0.5kg", "0.75kg")
         val activityLevels = arrayOf(
             "Sedentary (little or no exercise)",
@@ -86,39 +85,29 @@ class EditProfileActivity : AppCompatActivity() {
             "Extra Active (very hard exercise/physical job)"
         )
 
-        // Set up the Goal spinner
-        val goalAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, goals)
-        goalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerGoal.adapter = goalAdapter
+        // Set up Goal dropdown
+        val goalAdapter = ArrayAdapter(this, R.layout.dropdown_item, goals)
+        autoCompleteGoal.setAdapter(goalAdapter)
 
-        // Set up the Weekly Weight Change spinner
-        val weeklyWeightChangeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, weeklyWeightChanges)
-        weeklyWeightChangeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerWeeklyWeightChange.adapter = weeklyWeightChangeAdapter
+        // Set up Weekly Weight Change dropdown
+        val weeklyChangeAdapter = ArrayAdapter(this, R.layout.dropdown_item, weeklyWeightChanges)
+        autoCompleteWeeklyChange.setAdapter(weeklyChangeAdapter)
 
-        // Set up the Activity Level spinner
-        val activityLevelAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, activityLevels)
-        activityLevelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerActivityLevel.adapter = activityLevelAdapter
+        // Set up Activity Level dropdown
+        val activityAdapter = ArrayAdapter(this, R.layout.dropdown_item, activityLevels)
+        autoCompleteActivityLevel.setAdapter(activityAdapter)
 
-        // Handle Goal spinner selection to enable/disable fields accordingly
-        spinnerGoal.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedGoal = parent.getItemAtPosition(position).toString()
-
-                if (selectedGoal == "Maintain Weight") {
-                    spinnerWeeklyWeightChange.isEnabled = false // Disable spinner
-                    spinnerWeeklyWeightChange.setSelection(0)    // Optionally reset selection
-                    editTextWeightGoal.isEnabled = false // Disable weight goal
-                    editTextWeightGoal.setText("") // Clear weight goal
-                } else {
-                    spinnerWeeklyWeightChange.isEnabled = true  // Enable spinner for other goals
-                    editTextWeightGoal.isEnabled = true // Enable weight goal
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // No action needed here
+        // Handle Goal selection to enable/disable fields
+        autoCompleteGoal.setOnItemClickListener { _, _, position, _ ->
+            val selectedGoal = goals[position]
+            if (selectedGoal == "Maintain Weight") {
+                autoCompleteWeeklyChange.isEnabled = false
+                autoCompleteWeeklyChange.setText(weeklyWeightChanges[0], false)
+                editTextWeightGoal.isEnabled = false
+                editTextWeightGoal.setText("")
+            } else {
+                autoCompleteWeeklyChange.isEnabled = true
+                editTextWeightGoal.isEnabled = true
             }
         }
     }
@@ -139,39 +128,35 @@ class EditProfileActivity : AppCompatActivity() {
                         val allergensString = allergensList.joinToString(", ")
                         editTextAllergens.setText(allergensString)
 
-                        // Fetch the user's current goal from Firestore and set spinner value
-                        val goal = document.getString("goal") ?: "Maintain"
+                        // Set dropdown values
+                        val goal = document.getString("goal") ?: "Maintain Weight"
                         val weeklyWeightChange = document.getDouble("weeklyWeightChange") ?: 0.25
                         val activityLevel = document.getString("activityLevel") ?: "Sedentary (little or no exercise)"
-                        gender = document.getString("gender") ?: "male"  // Fetch gender
+                        gender = document.getString("gender") ?: "male"
 
-                        // Set spinnerGoal based on the fetched goal
-                        val goalIndex = (spinnerGoal.adapter as ArrayAdapter<String>).getPosition(goal)
-                        spinnerGoal.setSelection(goalIndex)
+                        // Set text for dropdowns
+                        autoCompleteGoal.setText(goal, false)
+                        autoCompleteActivityLevel.setText(activityLevel, false)
 
-                        // Enable or disable Weekly Weight Change and Weight Goal based on goal
+                        // Set Weekly Weight Change based on value
+                        val weeklyChangeText = when (weeklyWeightChange) {
+                            0.25 -> "0.25kg"
+                            0.5 -> "0.5kg"
+                            0.75 -> "0.75kg"
+                            else -> "0.25kg"
+                        }
+                        autoCompleteWeeklyChange.setText(weeklyChangeText, false)
+
+                        // Handle weight goal field
                         if (goal == "Maintain Weight") {
-                            spinnerWeeklyWeightChange.isEnabled = false
+                            autoCompleteWeeklyChange.isEnabled = false
                             editTextWeightGoal.isEnabled = false
-                            editTextWeightGoal.setText("")  // Clear weight goal
+                            editTextWeightGoal.setText("")
                         } else {
-                            spinnerWeeklyWeightChange.isEnabled = true
+                            autoCompleteWeeklyChange.isEnabled = true
                             editTextWeightGoal.isEnabled = true
                             editTextWeightGoal.setText(document.getDouble("weightGoal")?.toString() ?: "")
                         }
-
-                        // Set selection for Weekly Weight Change spinner
-                        val weeklyWeightChangeIndex = when (weeklyWeightChange) {
-                            0.25 -> 0
-                            0.5 -> 1
-                            0.75 -> 2
-                            else -> 0
-                        }
-                        spinnerWeeklyWeightChange.setSelection(weeklyWeightChangeIndex)
-
-                        // Set selection for Activity Level spinner
-                        val activityLevelIndex = (spinnerActivityLevel.adapter as ArrayAdapter<String>).getPosition(activityLevel)
-                        spinnerActivityLevel.setSelection(activityLevelIndex)
                     }
                 }
                 .addOnFailureListener { e ->
@@ -180,7 +165,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-
     private fun saveProfileData() {
         val userEmail = auth.currentUser?.email
 
@@ -188,21 +172,21 @@ class EditProfileActivity : AppCompatActivity() {
             val age = editTextAge.text.toString().toIntOrNull() ?: 0
             val height = editTextHeight.text.toString().toDoubleOrNull() ?: 0.0
             val weight = editTextWeight.text.toString().toDoubleOrNull() ?: 0.0
-            val weightGoal = editTextWeightGoal.text.toString().toDoubleOrNull() ?: weight // Default to current weight if no goal set
+            val weightGoal = editTextWeightGoal.text.toString().toDoubleOrNull() ?: weight
 
             // Convert the allergens string back to a list of strings
             val allergensString = editTextAllergens.text.toString()
             val allergensList = allergensString.split(",").map { it.trim() }
 
-            val goal = spinnerGoal.selectedItem.toString()
-            val weeklyWeightChange = when (spinnerWeeklyWeightChange.selectedItem.toString()) {
+            val goal = autoCompleteGoal.text.toString()
+            val weeklyWeightChange = when (autoCompleteWeeklyChange.text.toString()) {
                 "0.25kg" -> 0.25
                 "0.5kg" -> 0.5
                 "0.75kg" -> 0.75
                 else -> 0.25
             }
 
-            val activityLevel = spinnerActivityLevel.selectedItem.toString()
+            val activityLevel = autoCompleteActivityLevel.text.toString()
 
             // Calculate BMR (Basal Metabolic Rate) based on gender
             val bmr = calculateBMR(age, height, weight, gender)

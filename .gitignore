@@ -1,4 +1,4 @@
-*.iml
+OB*.iml
 .gradle
 /local.properties
 /.idea/caches
@@ -13,3 +13,16 @@
 .externalNativeBuild
 .cxx
 local.properties
+.idea/codeStyles/Project.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/runConfigurations.xml
+.kotlin/errors/errors-1732889334865.log
+app/release/app-release.apk
+app/release/baselineProfiles/0/app-release.dm
+app/release/baselineProfiles/1/app-release.dm
+.idea/
+.kotlin/
+app/release/
+app/debug/output-metadata.json
+app/release/output-metadata.json
+app/debug/app-debug.apk

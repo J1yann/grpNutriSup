@@ -5,188 +5,190 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F4EE"
-    tools:context=".ProfileActivity"
-    android:padding="0dp">
+    android:background="?attr/colorSurface"
+    tools:context=".ProfileActivity">
 
-    <!-- Card View that holds the user's profile details -->
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/profileCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_marginTop="20dp"
-        android:padding="16dp"
+        android:layout_margin="16dp"
         app:cardCornerRadius="12dp"
-        app:cardElevation="8dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/cardBackground"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorOutlineVariant"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/textViewProfileHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Profile Information"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="8dp"
-                android:paddingBottom="16dp"
-                android:textColor="@android:color/black" />
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="?attr/colorOnSurface"
+                android:layout_marginBottom="16dp"/>
 
-            <!-- Age -->
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Profile Details -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:spacing="8dp">
 
-                <TextView
-                    android:layout_width="0dp"
+                <!-- Age -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Age: "
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
 
-                <TextView
-                    android:id="@+id/textViewAge"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Age"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"/>
+
+                    <TextView
+                        android:id="@+id/textViewAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                </LinearLayout>
+
+                <!-- Height -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Height"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"/>
+
+                    <TextView
+                        android:id="@+id/textViewHeight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                </LinearLayout>
+
+                <!-- Weight -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Weight"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"/>
+
+                    <TextView
+                        android:id="@+id/textViewWeight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                </LinearLayout>
+
+                <!-- Allergens -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Allergens"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"/>
+
+                    <TextView
+                        android:id="@+id/textViewAllergens"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                </LinearLayout>
+
+                <!-- Goal -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Goal"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"/>
+
+                    <TextView
+                        android:id="@+id/textViewGoal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                </LinearLayout>
+
+                <!-- Weekly Weight Change -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Weekly Weight Change"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurface"/>
+
+                    <TextView
+                        android:id="@+id/textViewWeeklyWeightChange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                </LinearLayout>
             </LinearLayout>
-
-            <!-- Height -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Height: "
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-
-                <TextView
-                    android:id="@+id/textViewHeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Weight -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Weight: "
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-
-                <TextView
-                    android:id="@+id/textViewWeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Allergens -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Allergens: "
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-
-                <TextView
-                    android:id="@+id/textViewAllergens"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Goal -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Goal: "
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-
-                <TextView
-                    android:id="@+id/textViewGoal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <!-- Weekly Weight Change -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Weekly Weight Change: "
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-
-                <TextView
-                    android:id="@+id/textViewWeeklyWeightChange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"
-                    android:padding="8dp" />
-            </LinearLayout>
-
         </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Button Layout -->
     <LinearLayout
@@ -194,40 +196,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/profileCard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"
-        android:layout_marginTop="28dp">
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/profileCard">
 
-    <!-- Change Profile Button -->
-    <Button
-        android:id="@+id/buttonChangeProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="25dp"
-        android:backgroundTint="#57BF2A"
-        android:text="Edit Profile"
-        android:textColor="@android:color/white" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonChangeProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Edit Profile"
+            app:cornerRadius="24dp"
+            android:backgroundTint="@color/primary"
+            style="@style/Widget.Material3.Button"/>
 
-    <!-- Logout Button -->
-    <Button
-        android:id="@+id/buttonLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#57BF2A"
-        android:text="Logout"
-        android:textColor="@android:color/white" />
-</LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:textColor="?attr/colorError"
+            app:cornerRadius="24dp"
+            app:strokeColor="?attr/colorError"
+            app:strokeWidth="1dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"/>
+    </LinearLayout>
 
-    <!-- Bottom Navigation View -->
+    <!-- Bottom Navigation -->
     <include
         android:id="@+id/bottom_nav_include"
         layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-        
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

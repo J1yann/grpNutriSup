@@ -51,11 +51,12 @@ class FoodSearchActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
-                ActivityOptionsCompat.makeCustomAnimation(
+                val options = ActivityOptionsCompat.makeCustomAnimation(
                     this@FoodSearchActivity,
                     R.anim.fade_in,
                     R.anim.fade_out
-                ).toBundle()
+                )
+                startActivity(Intent(this@FoodSearchActivity, HomeActivity::class.java), options.toBundle())
             }
         })
 
@@ -171,12 +172,12 @@ class FoodSearchActivity : AppCompatActivity() {
 
     private fun navigateTo(activityClass: Class<*>) {
         val intent = Intent(this, activityClass)
-        startActivity(intent)
-        ActivityOptionsCompat.makeCustomAnimation(
+        val options = ActivityOptionsCompat.makeCustomAnimation(
             this,
             R.anim.fade_in,
             R.anim.fade_out
-        ).toBundle()
+        )
+        startActivity(intent, options.toBundle())
     }
 
     private fun fetchFoodData() {

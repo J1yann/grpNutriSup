@@ -39,6 +39,10 @@
     <color name="progressBackground">#E8F5E9</color>
     <color name="card_surface_variant">#FFFFFF</color>
     <color name="cardBackground">#FFFFFF</color>
+    <color name="success">#43A047</color>
+    <color name="input_background">#1A1A1A</color>
+    <color name="button_background">#388E3C</color>
+    <color name="button_text">#FFFFFF</color>
 
     <color name="nav_background">#E8F5E9</color>  <!-- Light green background -->
     <color name="nav_selected">#4CAF50</color>    <!-- Primary green -->
