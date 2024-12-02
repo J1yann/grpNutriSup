@@ -1,150 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@android:color/white">
 
-    <!-- ScrollView to make content scrollable if it overflows -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/progressBar"
-    android:padding="16dp">
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="32dp">
 
-        <!-- ImageView added at the top -->
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/logo" />
+            android:id="@+id/logoImage"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:src="@drawable/nutrisupp_logo"
+            android:contentDescription="NutriSup Logo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.4"/>
 
         <TextView
             android:id="@+id/textViewAllergenPrompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Please select any allergens you have:"
-            android:textSize="18sp"
-            android:paddingBottom="16dp"
-            android:layout_gravity="center_horizontal"/>
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/logoImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Use GridLayout to display allergens in two rows -->
         <GridLayout
             android:id="@+id/gridLayoutAllergens"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
             android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/textViewAllergenPrompt">
 
-            <!-- First column -->
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxMilk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Milk" />
+                android:text="Milk"
+                android:textColor="#000000"
+                android:paddingEnd="16dp"/>
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxEggs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Eggs" />
+                android:text="Eggs"
+                android:textColor="#000000"/>
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxShellfish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Crustacean shellfish" />
+                android:text="Crustacean shellfish"
+                android:textColor="#000000"
+                android:paddingEnd="16dp"/>
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxFish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fish" />
+                android:text="Fish"
+                android:textColor="#000000"/>
 
-            <!-- Second column -->
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxTreeNuts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tree nuts" />
+                android:text="Tree nuts"
+                android:textColor="#000000"
+                android:paddingEnd="16dp"/>
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxPeanuts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Peanuts" />
+                android:text="Peanuts"
+                android:textColor="#000000"/>
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxWheat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wheat" />
+                android:text="Wheat"
+                android:textColor="#000000"
+                android:paddingEnd="16dp"/>
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxSoybeans"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Soybeans" />
+                android:text="Soybeans"
+                android:textColor="#000000"/>
 
-            <!-- Extra column for more options -->
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxSesame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sesame" />
+                android:text="Sesame"
+                android:textColor="#000000"
+                android:paddingEnd="16dp"/>
 
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxNone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="None" />
+                android:text="None"
+                android:textColor="#000000"/>
 
-            <!-- New Others Checkbox -->
-            <CheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkBoxOthers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Others (Specify)" />
+                android:text="Others (Specify)"
+                android:textColor="#000000"/>
         </GridLayout>
 
-        <!-- EditText for custom allergens -->
-        <EditText
-            android:id="@+id/editTextOthers"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/othersInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Specify other allergens"
-            android:inputType="text"
-            android:enabled="false"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="#000000"
+            app:hintTextColor="#000000"
+            app:layout_constraintTop_toBottomOf="@id/gridLayoutAllergens">
 
-        <!-- Button adjusted to fit the screen width -->
-        <Button
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextOthers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Specify other allergens"
+                android:textColor="#000000"
+                android:inputType="text"
+                android:enabled="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonSubmitAllergens"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Continue"
+            android:textSize="16sp"
+            android:layout_marginTop="32dp"
+            app:cornerRadius="8dp"
+            app:layout_constraintTop_toBottomOf="@id/othersInputLayout"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit"
-            android:padding="12dp"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="#57BF2A"/>
-    </LinearLayout>
-</ScrollView>
+            android:max="100"
+            android:progress="33"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/buttonSubmitAllergens"/>
 
-    <!-- ProgressBar fixed to the bottom of the screen -->
-<ProgressBar
-android:id="@+id/progressBar"
-style="?android:attr/progressBarStyleHorizontal"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:max="100"
-android:progress="33"
-android:layout_marginTop="8dp"
-android:layout_marginBottom="8dp"
-android:layout_alignParentBottom="true" /> <!-- Align to the bottom of the screen -->
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

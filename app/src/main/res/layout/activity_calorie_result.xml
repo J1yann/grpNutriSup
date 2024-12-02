@@ -1,43 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:fillViewport="true"
+    android:background="@android:color/white">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="32dp">
 
         <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:src="@drawable/nutrisupp_logo"
+            android:contentDescription="NutriSup Logo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.4"/>
+
+        <TextView
+            android:id="@+id/textViewCalorieResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your daily calorie requirement is: 0 kcal"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+            android:textColor="@color/black"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/logoImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonNext"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Next"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_marginTop="32dp"
+            app:cornerRadius="30dp"
+            app:elevation="0dp"
+            android:backgroundTint="#4CAF50"
+            app:layout_constraintTop_toBottomOf="@id/textViewCalorieResult"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo"
-            android:layout_marginTop="20dp"/>
-    <TextView
-        android:id="@+id/textViewCalorieResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:layout_centerInParent="true"
-        android:text="Your daily calorie requirement is: 0 kcal"/>
-    <Button
-        android:id="@+id/buttonNext"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        android:layout_gravity="center"
-        android:padding="16dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#57BF2A" />
-    </LinearLayout>
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="100"
-        android:layout_marginTop="675dp"
-        android:layout_marginBottom="8dp" />
-</RelativeLayout>
+            android:max="100"
+            android:progress="100"
+            app:indicatorColor="#4CAF50"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@id/buttonNext"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

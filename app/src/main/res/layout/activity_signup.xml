@@ -1,36 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:fillViewport="true"
+    android:background="@android:color/white">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="32dp">
 
-        <!-- Logo Image -->
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="250dp"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/nutrisupp_logo" />
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:src="@drawable/nutrisupp_logo"
+            android:contentDescription="NutriSup Logo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.4"/>
 
-        <!-- Email Input -->
-        <EditText
-            android:id="@+id/editTextEmail"
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Join NutriSup"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+            android:textColor="@color/black"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@id/imageView"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/subtitleText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Start your journey to better health and nutrition"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="#666666"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/welcomeText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:background="@drawable/otherbtn"
-            android:padding="18dp"
-            android:layout_marginTop="16dp" />
+            app:boxBackgroundColor="@android:color/white"
+            app:prefixText="📧"
+            app:prefixTextColor="#4CAF50"
+            app:errorEnabled="true"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+            app:layout_constraintTop_toBottomOf="@id/subtitleText">
 
-        <!-- Email Error Message -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColor="#000000"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:id="@+id/textViewEmailError"
             android:layout_width="match_parent"
@@ -38,20 +76,30 @@
             android:textColor="@android:color/holo_red_dark"
             android:textSize="12sp"
             android:visibility="gone"
-            android:layout_marginTop="4dp" />
+            app:layout_constraintTop_toBottomOf="@id/emailLayout"/>
 
-        <!-- Password Input -->
-        <EditText
-            android:id="@+id/editTextPassword"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:background="@drawable/otherbtn"
-            android:padding="18dp"
-            android:layout_marginTop="12dp" />
+            app:boxBackgroundColor="@android:color/white"
+            app:prefixText="🔒"
+            app:prefixTextColor="#4CAF50"
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+            app:layout_constraintTop_toBottomOf="@id/textViewEmailError">
 
-        <!-- Password Error Message -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="#000000"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:id="@+id/textViewPasswordError"
             android:layout_width="match_parent"
@@ -59,20 +107,30 @@
             android:textColor="@android:color/holo_red_dark"
             android:textSize="12sp"
             android:visibility="gone"
-            android:layout_marginTop="4dp" />
+            app:layout_constraintTop_toBottomOf="@id/passwordLayout"/>
 
-        <!-- Confirm Password Input -->
-        <EditText
-            android:id="@+id/editTextConfirmPassword"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/confirmPasswordLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="Confirm Password"
-            android:inputType="textPassword"
-            android:background="@drawable/otherbtn"
-            android:padding="18dp"
-            android:layout_marginTop="12dp" />
+            app:boxBackgroundColor="@android:color/white"
+            app:prefixText="🔒"
+            app:prefixTextColor="#4CAF50"
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+            app:layout_constraintTop_toBottomOf="@id/textViewPasswordError">
 
-        <!-- Confirm Password Error Message -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="#000000"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:id="@+id/textViewConfirmPasswordError"
             android:layout_width="match_parent"
@@ -80,38 +138,41 @@
             android:textColor="@android:color/holo_red_dark"
             android:textSize="12sp"
             android:visibility="gone"
-            android:layout_marginTop="4dp" />
+            app:layout_constraintTop_toBottomOf="@id/confirmPasswordLayout"/>
 
-        <!-- Sign Up Button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonSignup"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#57BF2A"
-            android:layout_marginTop="20dp" />
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Get Started"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:layout_marginTop="32dp"
+            app:cornerRadius="30dp"
+            app:elevation="0dp"
+            app:layout_constraintTop_toBottomOf="@id/textViewConfirmPasswordError"/>
 
-        <!-- OR Separator -->
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/orText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OR"
-            android:layout_marginTop="20dp"
-            android:textSize="14sp"
-            android:layout_gravity="center" />
+            android:text="Already have an account?"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="#666666"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/buttonSignup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Login Button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonLogin"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:textColor="@android:color/black"
-            android:backgroundTint="#F4D35E"
-            android:layout_marginTop="16dp" />
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Sign In"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:layout_marginTop="8dp"
+            app:cornerRadius="30dp"
+            style="@style/Widget.Material3.Button.TonalButton"
+            app:layout_constraintTop_toBottomOf="@id/orText"/>
 
-    </LinearLayout>
-
-</RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
